@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Performance Dashboard | 2025-09-01 - 2025-09-24</title>
+    <style>
+        :root {
+            --bg-primary: #09090b;
+            --bg-secondary: #18181b;
+            --bg-tertiary: #27272a;
+            --border: #3f3f46;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --success: #4ade80;
+            --cyan: #22d3ee;
+            --amber: #fbbf24;
+            --error: #ef4444;
+            --font-mono: 'SF Mono', 'Cascadia Code', 'Roboto Mono', monospace;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .header-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+        
+        .header-meta {
+            text-align: right;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        .header-meta .mono {
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+        }
+        
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .grid-full {
+            grid-column: 1 / -1;
+        }
+        
+        .grid-2col {
+            grid-column: span 2;
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+        
+        .card-value {
+            font-family: var(--font-mono);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .card-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Metric Cards */
+        .metric-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .metric-card {
+            flex: 1;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+        
+        .metric-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-value {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        /* Tier Colors */
+        .tier-exemplary { color: var(--success); }
+        .tier-standard { color: var(--cyan); }
+        .tier-development { color: var(--amber); }
+        .tier-critical { color: var(--error); }
+        
+        .bg-exemplary { background: rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.3); }
+        .bg-standard { background: rgba(34, 211, 238, 0.1); border-color: rgba(34, 211, 238, 0.3); }
+        .bg-development { background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.3); }
+        .bg-critical { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); }
+        
+        /* Tier Distribution */
+        .tier-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        
+        .tier-box {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .tier-count {
+            font-family: var(--font-mono);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .tier-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        
+        /* Gap Bars */
+        .gap-item {
+            margin-bottom: 1rem;
+        }
+        
+        .gap-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+            font-size: 0.875rem;
+        }
+        
+        .gap-name {
+            color: var(--text-secondary);
+        }
+        
+        .gap-value {
+            font-family: var(--font-mono);
+            color: var(--text-primary);
+        }
+        
+        .gap-bar {
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .gap-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .gap-fill.good { background: var(--success); }
+        .gap-fill.warning { background: var(--amber); }
+        .gap-fill.critical { background: var(--error); }
+        
+        /* Agent Table */
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        
+        th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        
+        tr:hover td {
+            background: var(--bg-tertiary);
+        }
+        
+        .mono {
+            font-family: var(--font-mono);
+        }
+        
+        .tier-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        /* Evaluator Status */
+        .status-calibrated {
+            color: var(--success);
+        }
+        
+        .status-warning {
+            color: var(--amber);
+        }
+        
+        /* Section Headers */
+        .section-header {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div>
+                <h1 class="header-title">QA Performance Dashboard</h1>
+                <p class="header-meta">Evaluation Period: <span class="mono">2025-09-01</span> to <span class="mono">2025-09-24</span></p>
+            </div>
+            <div class="header-meta">
+                <div><span class="mono">51</span> evaluations</div>
+                <div><span class="mono">26</span> agents</div>
+                <div><span class="mono">4</span> evaluators</div>
+            </div>
+        </header>
+        
+        <!-- Key Metrics Row -->
+        <div class="metric-row">
+            <div class="metric-card">
+                <div class="metric-label">Team Average</div>
+                <div class="metric-value" style="color: var(--success);">83.0%</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Evaluations</div>
+                <div class="metric-value">51</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Agents Evaluated</div>
+                <div class="metric-value">26</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Needing Coaching</div>
+                <div class="metric-value tier-critical">9</div>
+            </div>
+        </div>
+        
+        <!-- Main Grid -->
+        <div class="grid">
+            <!-- Tier Distribution -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Performance Tiers</span>
+                </div>
+                <div class="tier-grid">
+                    <div class="tier-box bg-exemplary">
+                        <div class="tier-count tier-exemplary">6</div>
+                        <div class="tier-label">Exemplary</div>
+                    </div>
+                    <div class="tier-box bg-standard">
+                        <div class="tier-count tier-standard">11</div>
+                        <div class="tier-label">Standard</div>
+                    </div>
+                    <div class="tier-box bg-development">
+                        <div class="tier-count tier-development">6</div>
+                        <div class="tier-label">Development</div>
+                    </div>
+                    <div class="tier-box bg-critical">
+                        <div class="tier-count tier-critical">3</div>
+                        <div class="tier-label">Critical</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category Gaps -->
+            <div class="card grid-2col">
+                <div class="card-header">
+                    <span class="card-title">Category Gap Analysis</span>
+                </div>
+                
+        <div class="gap-item">
+            <div class="gap-header">
+                <span class="gap-name">Success / Missed Opportunity </span>
+                <span class="gap-value">30.0% gap</span>
+            </div>
+            <div class="gap-bar">
+                <div class="gap-fill critical" style="width: 100%;"></div>
+            </div>
+        </div>
+        
+        <div class="gap-item">
+            <div class="gap-header">
+                <span class="gap-name">Communication Markers </span>
+                <span class="gap-value">24.0% gap</span>
+            </div>
+            <div class="gap-bar">
+                <div class="gap-fill critical" style="width: 100%;"></div>
+            </div>
+        </div>
+        
+        <div class="gap-item">
+            <div class="gap-header">
+                <span class="gap-name">Script Compliance</span>
+                <span class="gap-value">19.8% gap</span>
+            </div>
+            <div class="gap-bar">
+                <div class="gap-fill warning" style="width: 99.0%;"></div>
+            </div>
+        </div>
+        
+        <div class="gap-item">
+            <div class="gap-header">
+                <span class="gap-name">Procedures & Resources</span>
+                <span class="gap-value">14.6% gap</span>
+            </div>
+            <div class="gap-bar">
+                <div class="gap-fill warning" style="width: 73.0%;"></div>
+            </div>
+        </div>
+        
+        <div class="gap-item">
+            <div class="gap-header">
+                <span class="gap-name">Opening/Closing</span>
+                <span class="gap-value">11.5% gap</span>
+            </div>
+            <div class="gap-bar">
+                <div class="gap-fill warning" style="width: 57.5%;"></div>
+            </div>
+        </div>
+        
+            </div>
+        </div>
+        
+        <!-- Agent Performance Table -->
+        <div class="card grid-full">
+            <div class="card-header">
+                <span class="card-title">Agent Performance Rankings</span>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Agent</th>
+                            <th>Score</th>
+                            <th>Evals</th>
+                            <th>Consistency</th>
+                            <th>Tier</th>
+                            <th>Top Failure</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+        <tr>
+            <td>James Thompson</td>
+            <td class="mono tier-critical">54.81%</td>
+            <td class="mono">2</td>
+            <td class="mono">24.48</td>
+            <td><span class="tier-badge tier-critical bg-critical">Critical</span></td>
+            <td style="color: var(--text-muted);">Subscriber Location & Search Q... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>Scotty Smith</td>
+            <td class="mono tier-critical">54.81%</td>
+            <td class="mono">2</td>
+            <td class="mono">24.48</td>
+            <td><span class="tier-badge tier-critical bg-critical">Critical</span></td>
+            <td style="color: var(--text-muted);">Dead Air... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>Angelica Jones</td>
+            <td class="mono tier-critical">59.86%</td>
+            <td class="mono">4</td>
+            <td class="mono">42.43</td>
+            <td><span class="tier-badge tier-critical bg-critical">Critical</span></td>
+            <td style="color: var(--text-muted);">Acknowledgement & Empathy ... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>Matt Black</td>
+            <td class="mono tier-development">66.83%</td>
+            <td class="mono">2</td>
+            <td class="mono">41.47</td>
+            <td><span class="tier-badge tier-development bg-development">Development</span></td>
+            <td style="color: var(--text-muted);">Does the agent offer introduct... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>(unresolved user) 4dd5af28-38e4-4b94-822f-b60bc9d7773a</td>
+            <td class="mono tier-development">67.31%</td>
+            <td class="mono">1</td>
+            <td class="mono">—</td>
+            <td><span class="tier-badge tier-development bg-development">Development</span></td>
+            <td style="color: var(--text-muted);">Subscriber Location & Search Q... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>Kevin Crowe</td>
+            <td class="mono tier-development">72.5%</td>
+            <td class="mono">2</td>
+            <td class="mono">3.54</td>
+            <td><span class="tier-badge tier-development bg-development">Development</span></td>
+            <td style="color: var(--text-muted);">Does the agent offer introduct... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>Gabe Norman</td>
+            <td class="mono tier-development">76.92%</td>
+            <td class="mono">2</td>
+            <td class="mono">20.4</td>
+            <td><span class="tier-badge tier-development bg-development">Development</span></td>
+            <td style="color: var(--text-muted);">Dead Air... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>Mike Alvarez</td>
+            <td class="mono tier-development">78.37%</td>
+            <td class="mono">2</td>
+            <td class="mono">4.76</td>
+            <td><span class="tier-badge tier-development bg-development">Development</span></td>
+            <td style="color: var(--text-muted);">Provider Call Branding... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>Camden McKinney</td>
+            <td class="mono tier-development">79.33%</td>
+            <td class="mono">2</td>
+            <td class="mono">23.8</td>
+            <td><span class="tier-badge tier-development bg-development">Development</span></td>
+            <td style="color: var(--text-muted);">Does the agent offer introduct... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>Jim McMeen</td>
+            <td class="mono tier-standard">84.62%</td>
+            <td class="mono">2</td>
+            <td class="mono">4.08</td>
+            <td><span class="tier-badge tier-standard bg-standard">Standard</span></td>
+            <td style="color: var(--text-muted);">Subscriber Location & Search Q... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>Tyson Hailey</td>
+            <td class="mono tier-standard">84.62%</td>
+            <td class="mono">2</td>
+            <td class="mono">4.08</td>
+            <td><span class="tier-badge tier-standard bg-standard">Standard</span></td>
+            <td style="color: var(--text-muted);">If the customer was placed on ... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>Zachary Vany</td>
+            <td class="mono tier-standard">85.58%</td>
+            <td class="mono">2</td>
+            <td class="mono">14.96</td>
+            <td><span class="tier-badge tier-standard bg-standard">Standard</span></td>
+            <td style="color: var(--text-muted);"> If escalation occurred, were ... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>Adrien Banuelos</td>
+            <td class="mono tier-standard">86.06%</td>
+            <td class="mono">2</td>
+            <td class="mono">19.72</td>
+            <td><span class="tier-badge tier-standard bg-standard">Standard</span></td>
+            <td style="color: var(--text-muted);">Call Closing / Escalation Proc... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>(unresolved user) bb2a4aae-ffff-489d-86a1-616b87721cf7</td>
+            <td class="mono tier-standard">86.54%</td>
+            <td class="mono">1</td>
+            <td class="mono">—</td>
+            <td><span class="tier-badge tier-standard bg-standard">Standard</span></td>
+            <td style="color: var(--text-muted);">Dead Air... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>Bryan Renner</td>
+            <td class="mono tier-standard">87.02%</td>
+            <td class="mono">2</td>
+            <td class="mono">0.68</td>
+            <td><span class="tier-badge tier-standard bg-standard">Standard</span></td>
+            <td style="color: var(--text-muted);">If the customer was placed on ... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>Justice Derringer</td>
+            <td class="mono tier-standard">87.02%</td>
+            <td class="mono">2</td>
+            <td class="mono">0.68</td>
+            <td><span class="tier-badge tier-standard bg-standard">Standard</span></td>
+            <td style="color: var(--text-muted);">Subscriber Location & Search Q... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>Zac Freedle</td>
+            <td class="mono tier-standard">87.02%</td>
+            <td class="mono">2</td>
+            <td class="mono">0.68</td>
+            <td><span class="tier-badge tier-standard bg-standard">Standard</span></td>
+            <td style="color: var(--text-muted);">Does the agent offer introduct... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>Vincent Watson Jr</td>
+            <td class="mono tier-standard">88.46%</td>
+            <td class="mono">2</td>
+            <td class="mono">16.32</td>
+            <td><span class="tier-badge tier-standard bg-standard">Standard</span></td>
+            <td style="color: var(--text-muted);">Call Closing / Escalation Proc... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>Brittany Rosenbaugh</td>
+            <td class="mono tier-standard">91.83%</td>
+            <td class="mono">2</td>
+            <td class="mono">6.12</td>
+            <td><span class="tier-badge tier-standard bg-standard">Standard</span></td>
+            <td style="color: var(--text-muted);">If the customer was placed on ... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>Daniel Motto</td>
+            <td class="mono tier-standard">91.83%</td>
+            <td class="mono">2</td>
+            <td class="mono">6.12</td>
+            <td><span class="tier-badge tier-standard bg-standard">Standard</span></td>
+            <td style="color: var(--text-muted);">If the customer was placed on ... (100.0%)</td>
+        </tr>
+        
+        <tr>
+            <td>Ethan Kumke</td>
+            <td class="mono tier-exemplary">96.15%</td>
+            <td class="mono">1</td>
+            <td class="mono">—</td>
+            <td><span class="tier-badge tier-exemplary bg-exemplary">Exemplary</span></td>
+            <td style="color: var(--text-muted);">—</td>
+        </tr>
+        
+        <tr>
+            <td>Alvaro Solis</td>
+            <td class="mono tier-exemplary">98.08%</td>
+            <td class="mono">2</td>
+            <td class="mono">2.72</td>
+            <td><span class="tier-badge tier-exemplary bg-exemplary">Exemplary</span></td>
+            <td style="color: var(--text-muted);">—</td>
+        </tr>
+        
+        <tr>
+            <td>Eli Bradley</td>
+            <td class="mono tier-exemplary">98.08%</td>
+            <td class="mono">2</td>
+            <td class="mono">2.72</td>
+            <td><span class="tier-badge tier-exemplary bg-exemplary">Exemplary</span></td>
+            <td style="color: var(--text-muted);">—</td>
+        </tr>
+        
+        <tr>
+            <td>Justin Earley-Buckley</td>
+            <td class="mono tier-exemplary">98.08%</td>
+            <td class="mono">2</td>
+            <td class="mono">2.72</td>
+            <td><span class="tier-badge tier-exemplary bg-exemplary">Exemplary</span></td>
+            <td style="color: var(--text-muted);">—</td>
+        </tr>
+        
+        <tr>
+            <td>Skylar Bean</td>
+            <td class="mono tier-exemplary">98.08%</td>
+            <td class="mono">2</td>
+            <td class="mono">2.72</td>
+            <td><span class="tier-badge tier-exemplary bg-exemplary">Exemplary</span></td>
+            <td style="color: var(--text-muted);">—</td>
+        </tr>
+        
+        <tr>
+            <td>Victor Heiar</td>
+            <td class="mono tier-exemplary">98.08%</td>
+            <td class="mono">2</td>
+            <td class="mono">2.72</td>
+            <td><span class="tier-badge tier-exemplary bg-exemplary">Exemplary</span></td>
+            <td style="color: var(--text-muted);">—</td>
+        </tr>
+        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Two Column: Questions + Evaluators -->
+        <div class="grid" style="margin-top: 1.5rem;">
+            <!-- Top Failing Questions -->
+            <div class="card grid-2col">
+                <div class="card-header">
+                    <span class="card-title">Top Failing Behaviors (Coaching Priorities)</span>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Question</th>
+                                <th>Category</th>
+                                <th>Fail Rate</th>
+                                <th>Impact</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+        <tr>
+            <td>Disconnected the Call (Confirm with ENG)...</td>
+            <td style="color: var(--text-muted);">Auto-Fail Flags</td>
+            <td class="mono" style="color: var(--text-secondary);">nan%</td>
+            <td class="mono">26 pts</td>
+        </tr>
+        
+        <tr>
+            <td>Excessively Rude or Aggressively Loud</td>
+            <td style="color: var(--text-muted);">Auto-Fail Flags</td>
+            <td class="mono" style="color: var(--text-secondary);">nan%</td>
+            <td class="mono">26 pts</td>
+        </tr>
+        
+        <tr>
+            <td>Falsified Documentation</td>
+            <td style="color: var(--text-muted);">Auto-Fail Flags</td>
+            <td class="mono" style="color: var(--text-secondary);">nan%</td>
+            <td class="mono">26 pts</td>
+        </tr>
+        
+        <tr>
+            <td>Swore on the Call</td>
+            <td style="color: var(--text-muted);">Auto-Fail Flags</td>
+            <td class="mono" style="color: var(--text-secondary);">nan%</td>
+            <td class="mono">26 pts</td>
+        </tr>
+        
+        <tr>
+            <td>Accuracy & Detail of Ticket & Service, C...</td>
+            <td style="color: var(--text-muted);">Procedures & Re</td>
+            <td class="mono" style="color: var(--error);">30.8%</td>
+            <td class="mono">80 pts</td>
+        </tr>
+        
+        <tr>
+            <td>Did the technician use courtesy language...</td>
+            <td style="color: var(--text-muted);">Communication M</td>
+            <td class="mono" style="color: var(--amber);">20.8%</td>
+            <td class="mono">50 pts</td>
+        </tr>
+        
+        <tr>
+            <td>Does the agent offer introductory courte...</td>
+            <td style="color: var(--text-muted);">Script Complian</td>
+            <td class="mono" style="color: var(--error);">41.7%</td>
+            <td class="mono">50 pts</td>
+        </tr>
+        
+        <tr>
+            <td>If the customer was placed on hold, were...</td>
+            <td style="color: var(--text-muted);">Communication M</td>
+            <td class="mono" style="color: var(--error);">37.5%</td>
+            <td class="mono">45 pts</td>
+        </tr>
+        
+        <tr>
+            <td>Dead Air</td>
+            <td style="color: var(--text-muted);">Communication &</td>
+            <td class="mono" style="color: var(--error);">30.8%</td>
+            <td class="mono">40 pts</td>
+        </tr>
+        
+        <tr>
+            <td>Call Closing / Escalation Procedures</td>
+            <td style="color: var(--text-muted);">Opening/Closing</td>
+            <td class="mono" style="color: var(--amber);">23.1%</td>
+            <td class="mono">30 pts</td>
+        </tr>
+        
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Evaluator Calibration -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Evaluator Calibration</span>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Evaluator</th>
+                                <th>Avg</th>
+                                <th>σ</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+        <tr>
+            <td>Annie Pedrino</td>
+            <td class="mono">75.0%</td>
+            <td class="mono">—</td>
+            <td class="status-warning">Insufficient Data</td>
+        </tr>
+        
+        <tr>
+            <td>Jimmie Klein</td>
+            <td class="mono">84.7%</td>
+            <td class="mono">11.3</td>
+            <td class="status-calibrated">Calibrated</td>
+        </tr>
+        
+        <tr>
+            <td>Kyle Bonpua</td>
+            <td class="mono">81.5%</td>
+            <td class="mono">23.7</td>
+            <td class="status-warning">High Variance</td>
+        </tr>
+        
+        <tr>
+            <td>Paige Rombou</td>
+            <td class="mono">82.3%</td>
+            <td class="mono">11.9</td>
+            <td class="status-calibrated">Calibrated</td>
+        </tr>
+        
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="footer">
+            Generated 2026-01-15 15:59 | Genesys QA Analytics | ISPN iGLASS Tech Center
+        </footer>
+    </div>
+</body>
+</html>

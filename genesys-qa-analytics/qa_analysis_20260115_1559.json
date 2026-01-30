@@ -1,0 +1,930 @@
+{
+  "success": true,
+  "metadata": {
+    "date_range": [
+      "2025-09-01",
+      "2025-09-24"
+    ],
+    "evaluation_count": 51,
+    "agent_count": 26,
+    "evaluator_count": 4,
+    "form_distribution": {
+      "Auto-Evaluation Form - v0.1": 24,
+      "Focus Review Evaluation Form": 1,
+      "Full Call Review Evaluation Form": 26
+    },
+    "team_average": 83.0,
+    "team_std": 13.3
+  },
+  "tier_distribution": {
+    "Development": 6,
+    "Standard": 11,
+    "Exemplary": 6,
+    "Critical": 3
+  },
+  "agents": [
+    {
+      "name": "James Thompson",
+      "agent_id": "f0bb5067-930a-4213-ac01-cb8a98fee541",
+      "eval_count": 2,
+      "avg_percentage": 54.81,
+      "std_dev": 24.48,
+      "tier": "Critical",
+      "failure_patterns": {
+        "Subscriber Location & Search Queries ": 100.0,
+        "Call Closing / Escalation Procedures": 100.0,
+        "Efficiency of Troubleshooting": 100.0,
+        "Accuracy & Detail of Ticket & Service, Category, and Tag Selection": 100.0,
+        "Does the agent offer introductory courtesies during the start of the interaction? ": 100.0,
+        "Did the technician use courtesy language at least 3 times during the call?": 100.0,
+        "If the customer was placed on hold, were proper hold courtesies used?": 100.0,
+        "Did the technician acknowledge the customer's issue or concern?": 100.0
+      }
+    },
+    {
+      "name": "Scotty Smith",
+      "agent_id": "a9314323-f6ef-43c9-96de-0adb6d6ff863",
+      "eval_count": 2,
+      "avg_percentage": 54.81,
+      "std_dev": 24.48,
+      "tier": "Critical",
+      "failure_patterns": {
+        "Dead Air": 100.0,
+        "Accurate Diagnosis": 100.0,
+        "Checking Fundamentals": 100.0,
+        "Use of Support Flow": 100.0,
+        "Use of Tools / Admins": 100.0,
+        "Does the agent offer introductory courtesies during the start of the interaction? ": 100.0,
+        "Did the agent provide an opening branding statement identifying the company and department?": 100.0,
+        "Did the technician use courtesy language at least 3 times during the call?": 100.0,
+        "Did the technician acknowledge the customer's issue or concern?": 100.0
+      }
+    },
+    {
+      "name": "Angelica Jones",
+      "agent_id": "c6dfad4b-391a-46ed-8b2b-1e43f053ebc2",
+      "eval_count": 4,
+      "avg_percentage": 59.86,
+      "std_dev": 42.43,
+      "tier": "Critical",
+      "failure_patterns": {
+        "Acknowledgement & Empathy ": 100.0,
+        "Accuracy & Detail of Ticket & Service, Category, and Tag Selection": 100.0,
+        "Does the agent offer introductory courtesies during the start of the interaction? ": 50.0,
+        "Did the agent provide an opening branding statement identifying the company and department?": 50.0,
+        "Did the technician confirm subscriber information to locate the customer account?": 50.0,
+        " If escalation occurred, were proper escalation procedures followed?": 50.0,
+        "Did the technician use courtesy language at least 3 times during the call?": 50.0,
+        "If the customer was placed on hold, were proper hold courtesies used?": 50.0,
+        "Did the technician acknowledge the customer's issue or concern?": 50.0,
+        "Subscriber Location & Search Queries ": 50.0,
+        "Call Closing / Escalation Procedures": 50.0,
+        "Dead Air": 50.0,
+        "Excessive Hold": 50.0,
+        "Accurate Diagnosis": 50.0
+      }
+    },
+    {
+      "name": "Matt Black",
+      "agent_id": "f3074cfc-69e7-43aa-ba4f-cc393e7f39c2",
+      "eval_count": 2,
+      "avg_percentage": 66.83,
+      "std_dev": 41.47,
+      "tier": "Development",
+      "failure_patterns": {
+        "Does the agent offer introductory courtesies during the start of the interaction? ": 100.0,
+        "Did the technician use courtesy language at least 3 times during the call?": 100.0,
+        "If the customer was placed on hold, were proper hold courtesies used?": 100.0,
+        "Did the technician acknowledge the customer's issue or concern?": 100.0
+      }
+    },
+    {
+      "name": "(unresolved user) 4dd5af28-38e4-4b94-822f-b60bc9d7773a",
+      "agent_id": "4dd5af28-38e4-4b94-822f-b60bc9d7773a",
+      "eval_count": 1,
+      "avg_percentage": 67.31,
+      "std_dev": null,
+      "tier": "Development",
+      "failure_patterns": {
+        "Subscriber Location & Search Queries ": 100.0,
+        "Acknowledgement & Empathy ": 100.0,
+        "Dead Air": 100.0,
+        "Checking Fundamentals": 100.0,
+        "Accuracy & Detail of Ticket & Service, Category, and Tag Selection": 100.0
+      }
+    },
+    {
+      "name": "Kevin Crowe",
+      "agent_id": "dfee7f01-4e8d-4ffc-9f5c-e68108795f4c",
+      "eval_count": 2,
+      "avg_percentage": 72.5,
+      "std_dev": 3.54,
+      "tier": "Development",
+      "failure_patterns": {
+        "Does the agent offer introductory courtesies during the start of the interaction? ": 100.0,
+        "Did the agent provide an opening branding statement identifying the company and department?": 100.0
+      }
+    },
+    {
+      "name": "Gabe Norman",
+      "agent_id": "fcd250aa-2ca8-4d6e-b677-d1f4ca519671",
+      "eval_count": 2,
+      "avg_percentage": 76.92,
+      "std_dev": 20.4,
+      "tier": "Development",
+      "failure_patterns": {
+        "Dead Air": 100.0,
+        "Does the agent offer introductory courtesies during the start of the interaction? ": 100.0,
+        "Did the agent provide an opening branding statement identifying the company and department?": 100.0,
+        "If the customer was placed on hold, were proper hold courtesies used?": 100.0
+      }
+    },
+    {
+      "name": "Mike Alvarez",
+      "agent_id": "3ea6ecee-2a14-4bee-96d6-702b233d1aad",
+      "eval_count": 2,
+      "avg_percentage": 78.37,
+      "std_dev": 4.76,
+      "tier": "Development",
+      "failure_patterns": {
+        "Provider Call Branding": 100.0,
+        "Dead Air": 100.0,
+        "Efficiency of Troubleshooting": 100.0,
+        "Does the agent offer introductory courtesies during the start of the interaction? ": 100.0,
+        "Did the agent provide an opening branding statement identifying the company and department?": 100.0
+      }
+    },
+    {
+      "name": "Camden McKinney",
+      "agent_id": "64106c03-3c5e-47d7-b01f-ba47d43dd05a",
+      "eval_count": 2,
+      "avg_percentage": 79.33,
+      "std_dev": 23.8,
+      "tier": "Development",
+      "failure_patterns": {
+        "Does the agent offer introductory courtesies during the start of the interaction? ": 100.0,
+        "Did the technician use courtesy language at least 3 times during the call?": 100.0
+      }
+    },
+    {
+      "name": "Jim McMeen",
+      "agent_id": "6d32e80a-f784-4b69-afce-d8700558b2f6",
+      "eval_count": 2,
+      "avg_percentage": 84.62,
+      "std_dev": 4.08,
+      "tier": "Standard",
+      "failure_patterns": {
+        "Subscriber Location & Search Queries ": 100.0,
+        "Accuracy & Detail of Ticket & Service, Category, and Tag Selection": 100.0,
+        "Did the technician confirm subscriber information to locate the customer account?": 100.0
+      }
+    },
+    {
+      "name": "Tyson Hailey",
+      "agent_id": "3900d32e-36f6-47b5-8c1f-6c4eba5177f0",
+      "eval_count": 2,
+      "avg_percentage": 84.62,
+      "std_dev": 4.08,
+      "tier": "Standard",
+      "failure_patterns": {
+        "If the customer was placed on hold, were proper hold courtesies used?": 100.0,
+        "Checking Fundamentals": 100.0,
+        "Accuracy & Detail of Ticket & Service, Category, and Tag Selection": 100.0
+      }
+    },
+    {
+      "name": "Zachary Vany",
+      "agent_id": "17d5db12-e019-46f6-8b48-01c35020aa4e",
+      "eval_count": 2,
+      "avg_percentage": 85.58,
+      "std_dev": 14.96,
+      "tier": "Standard",
+      "failure_patterns": {
+        " If escalation occurred, were proper escalation procedures followed?": 100.0,
+        "If the customer was placed on hold, were proper hold courtesies used?": 100.0
+      }
+    },
+    {
+      "name": "Adrien Banuelos",
+      "agent_id": "b90586a3-d64a-4f98-be5b-4df52244a067",
+      "eval_count": 2,
+      "avg_percentage": 86.06,
+      "std_dev": 19.72,
+      "tier": "Standard",
+      "failure_patterns": {
+        "Call Closing / Escalation Procedures": 100.0,
+        "Dead Air": 100.0,
+        "Checking Fundamentals": 100.0,
+        "Accuracy & Detail of Ticket & Service, Category, and Tag Selection": 100.0
+      }
+    },
+    {
+      "name": "(unresolved user) bb2a4aae-ffff-489d-86a1-616b87721cf7",
+      "agent_id": "bb2a4aae-ffff-489d-86a1-616b87721cf7",
+      "eval_count": 1,
+      "avg_percentage": 86.54,
+      "std_dev": null,
+      "tier": "Standard",
+      "failure_patterns": {
+        "Dead Air": 100.0,
+        "Excessive Hold": 100.0
+      }
+    },
+    {
+      "name": "Bryan Renner",
+      "agent_id": "12be9ffd-ccb2-4a83-b596-cb0c82c0bbdb",
+      "eval_count": 2,
+      "avg_percentage": 87.02,
+      "std_dev": 0.68,
+      "tier": "Standard",
+      "failure_patterns": {
+        "If the customer was placed on hold, were proper hold courtesies used?": 100.0,
+        "Call Closing / Escalation Procedures": 100.0,
+        "Dead Air": 100.0
+      }
+    },
+    {
+      "name": "Justice Derringer",
+      "agent_id": "adcb4d5c-777c-43e8-8dbf-831befe5a375",
+      "eval_count": 2,
+      "avg_percentage": 87.02,
+      "std_dev": 0.68,
+      "tier": "Standard",
+      "failure_patterns": {
+        "Subscriber Location & Search Queries ": 100.0,
+        "Acknowledgement & Empathy ": 100.0,
+        "Does the agent offer introductory courtesies during the start of the interaction? ": 100.0
+      }
+    },
+    {
+      "name": "Zac Freedle",
+      "agent_id": "230de450-0967-4d42-af1d-fc3e007883f2",
+      "eval_count": 2,
+      "avg_percentage": 87.02,
+      "std_dev": 0.68,
+      "tier": "Standard",
+      "failure_patterns": {
+        "Does the agent offer introductory courtesies during the start of the interaction? ": 100.0,
+        "Call Closing / Escalation Procedures": 100.0,
+        "Acknowledgement & Empathy ": 100.0
+      }
+    },
+    {
+      "name": "Vincent Watson Jr",
+      "agent_id": "4da91776-d225-4ad9-b645-930099c7f47f",
+      "eval_count": 2,
+      "avg_percentage": 88.46,
+      "std_dev": 16.32,
+      "tier": "Standard",
+      "failure_patterns": {
+        "Call Closing / Escalation Procedures": 100.0,
+        "Application of U/L Instruction": 100.0,
+        "Accuracy & Detail of Ticket & Service, Category, and Tag Selection": 100.0
+      }
+    },
+    {
+      "name": "Brittany Rosenbaugh",
+      "agent_id": "1e2bf386-15df-491e-a03f-166afa39b5ea",
+      "eval_count": 2,
+      "avg_percentage": 91.83,
+      "std_dev": 6.12,
+      "tier": "Standard",
+      "failure_patterns": {
+        "If the customer was placed on hold, were proper hold courtesies used?": 100.0
+      }
+    },
+    {
+      "name": "Daniel Motto",
+      "agent_id": "0d6bb848-da23-4b20-8165-eff3894c3a5f",
+      "eval_count": 2,
+      "avg_percentage": 91.83,
+      "std_dev": 6.12,
+      "tier": "Standard",
+      "failure_patterns": {
+        "If the customer was placed on hold, were proper hold courtesies used?": 100.0
+      }
+    },
+    {
+      "name": "Ethan Kumke",
+      "agent_id": "851f2f07-de80-490e-be6b-8b7e4751797f",
+      "eval_count": 1,
+      "avg_percentage": 96.15,
+      "std_dev": null,
+      "tier": "Exemplary",
+      "failure_patterns": {}
+    },
+    {
+      "name": "Alvaro Solis",
+      "agent_id": "6f706d2d-f6be-440c-bdb6-e84c83bbc219",
+      "eval_count": 2,
+      "avg_percentage": 98.08,
+      "std_dev": 2.72,
+      "tier": "Exemplary",
+      "failure_patterns": {}
+    },
+    {
+      "name": "Eli Bradley",
+      "agent_id": "9d49881d-4bb8-4674-aa91-bf4a95e1d0a3",
+      "eval_count": 2,
+      "avg_percentage": 98.08,
+      "std_dev": 2.72,
+      "tier": "Exemplary",
+      "failure_patterns": {}
+    },
+    {
+      "name": "Justin Earley-Buckley",
+      "agent_id": "1aa1c86a-aea1-49fe-86e4-c5d4375b2091",
+      "eval_count": 2,
+      "avg_percentage": 98.08,
+      "std_dev": 2.72,
+      "tier": "Exemplary",
+      "failure_patterns": {}
+    },
+    {
+      "name": "Skylar Bean",
+      "agent_id": "592e4875-74a0-4b6b-a0c3-faf0b1489347",
+      "eval_count": 2,
+      "avg_percentage": 98.08,
+      "std_dev": 2.72,
+      "tier": "Exemplary",
+      "failure_patterns": {}
+    },
+    {
+      "name": "Victor Heiar",
+      "agent_id": "34824c60-322e-401d-abb2-92a088be8364",
+      "eval_count": 2,
+      "avg_percentage": 98.08,
+      "std_dev": 2.72,
+      "tier": "Exemplary",
+      "failure_patterns": {}
+    }
+  ],
+  "questions": [
+    {
+      "question_text": "Disconnected the Call (Confirm with ENG) ",
+      "group_name": "Auto-Fail Flags",
+      "max_points": 1.0,
+      "failure_rate": NaN,
+      "points_lost": 26.0,
+      "impact_score": NaN,
+      "help_text": null,
+      "fail_count": 0,
+      "total_count": 0
+    },
+    {
+      "question_text": "Excessively Rude or Aggressively Loud",
+      "group_name": "Auto-Fail Flags",
+      "max_points": 1.0,
+      "failure_rate": NaN,
+      "points_lost": 26.0,
+      "impact_score": NaN,
+      "help_text": null,
+      "fail_count": 0,
+      "total_count": 0
+    },
+    {
+      "question_text": "Falsified Documentation",
+      "group_name": "Auto-Fail Flags",
+      "max_points": 1.0,
+      "failure_rate": NaN,
+      "points_lost": 26.0,
+      "impact_score": NaN,
+      "help_text": null,
+      "fail_count": 0,
+      "total_count": 0
+    },
+    {
+      "question_text": "Swore on the Call",
+      "group_name": "Auto-Fail Flags",
+      "max_points": 1.0,
+      "failure_rate": NaN,
+      "points_lost": 26.0,
+      "impact_score": NaN,
+      "help_text": null,
+      "fail_count": 0,
+      "total_count": 0
+    },
+    {
+      "question_text": "Accuracy & Detail of Ticket & Service, Category, and Tag Selection",
+      "group_name": "Procedures & Resources",
+      "max_points": 10.0,
+      "failure_rate": 30.8,
+      "points_lost": 80.0,
+      "impact_score": 307.7,
+      "help_text": null,
+      "fail_count": 8,
+      "total_count": 26
+    },
+    {
+      "question_text": "Did the technician use courtesy language at least 3 times during the call?",
+      "group_name": "Communication Markers ",
+      "max_points": 10.0,
+      "failure_rate": 20.8,
+      "points_lost": 50.0,
+      "impact_score": 208.3,
+      "help_text": "Count instances of courtesy language from THE TECHNICIAN ONLY throughout the call: - \"Please\" - \"Thank you\" / \"Thanks\" - \"I appreciate\" - \"If you don't mind\" - \"Would you mind\"  Do not count customer statements.  PASS if: 5 or more courtesy instances from technician FAIL if: Fewer than 5 instances",
+      "fail_count": 5,
+      "total_count": 24
+    },
+    {
+      "question_text": "Does the agent offer introductory courtesies during the start of the interaction? ",
+      "group_name": "Script Compliance",
+      "max_points": 5.0,
+      "failure_rate": 41.7,
+      "points_lost": 50.0,
+      "impact_score": 208.3,
+      "help_text": "Please / thank you should be offered by the agent after requesting / receiving information like name, phone number, and address from the customer at the start of the interaction. This information should be confirmed within the first 5 minutes of the call. ",
+      "fail_count": 10,
+      "total_count": 24
+    },
+    {
+      "question_text": "If the customer was placed on hold, were proper hold courtesies used?",
+      "group_name": "Communication Markers ",
+      "max_points": 5.0,
+      "failure_rate": 37.5,
+      "points_lost": 45.0,
+      "impact_score": 187.5,
+      "help_text": "First, determine if hold occurred by searching for: \"hold,\" \"one moment,\" \"brief moment,\" \"bear with me while I,\" \"let me check on that\"  If NO hold language found: Return YES  If hold detected, verify BOTH: 1. BEFORE hold: Permission or notification (e.g., \"May I place you on hold?\" or \"One moment please\" or \"Let me put you on hold briefly\") 2. AFTER hold: Acknowledgment (e.g., \"Thank you for holding\" or \"Thanks for waiting\" or \"I appreciate your patience\")  PASS if: Both before-hold and after-hold courtesies present FAIL if: Hold occurred but missing either courtesy",
+      "fail_count": 9,
+      "total_count": 24
+    },
+    {
+      "question_text": "Dead Air",
+      "group_name": "Communication & Courtesy",
+      "max_points": 5.0,
+      "failure_rate": 30.8,
+      "points_lost": 40.0,
+      "impact_score": 153.8,
+      "help_text": null,
+      "fail_count": 8,
+      "total_count": 26
+    },
+    {
+      "question_text": "Call Closing / Escalation Procedures",
+      "group_name": "Opening/Closing",
+      "max_points": 5.0,
+      "failure_rate": 23.1,
+      "points_lost": 30.0,
+      "impact_score": 115.4,
+      "help_text": null,
+      "fail_count": 6,
+      "total_count": 26
+    },
+    {
+      "question_text": "Did the agent provide an opening branding statement identifying the company and department?",
+      "group_name": "Script Compliance",
+      "max_points": 5.0,
+      "failure_rate": 20.8,
+      "points_lost": 25.0,
+      "impact_score": 104.2,
+      "help_text": "Search the first 3 exchanges of the call for a greeting that includes BOTH: 1. Company/provider name (any telecommunications provider) 2. Department identification (e.g., \"Technical Support,\" \"Customer Service,\" \"Help Desk\")  PASS if: Opening includes both company name AND department (e.g., \"Thank you for calling [Company] Technical Support\" or \"[Company] Tech Support, this is [name]\")  FAIL if:  - Missing company name OR department identification - Generic greeting only (e.g., \"Hello, this is John\") - Only partial branding (e.g., \"Thanks for calling\" without identifying company)",
+      "fail_count": 5,
+      "total_count": 24
+    },
+    {
+      "question_text": "Acknowledgement & Empathy ",
+      "group_name": "Communication & Courtesy",
+      "max_points": 5.0,
+      "failure_rate": 19.2,
+      "points_lost": 25.0,
+      "impact_score": 96.2,
+      "help_text": null,
+      "fail_count": 5,
+      "total_count": 26
+    },
+    {
+      "question_text": "Subscriber Location & Search Queries ",
+      "group_name": "Opening/Closing",
+      "max_points": 5.0,
+      "failure_rate": 19.2,
+      "points_lost": 25.0,
+      "impact_score": 96.2,
+      "help_text": null,
+      "fail_count": 5,
+      "total_count": 26
+    },
+    {
+      "question_text": "Did the technician acknowledge the customer's issue or concern?",
+      "group_name": "Communication Markers ",
+      "max_points": 5.0,
+      "failure_rate": 16.7,
+      "points_lost": 20.0,
+      "impact_score": 83.3,
+      "help_text": "After the customer describes their problem, search for acknowledgment language such as: - \"I understand [that's frustrating/the issue/your concern]\" - \"I can see why [that would be concerning/frustrating]\" - \"I'm sorry [you're experiencing this/to hear that]\" - \"Let's get this resolved/fixed for you\" - \"I appreciate you bringing this to our attention\" - \"That must be [frustrating/inconvenient]\"  PASS if: At least one acknowledgment phrase appears AFTER customer describes their issue  FAIL if: Technician immediately jumps to troubleshooting without any acknowledgment",
+      "fail_count": 4,
+      "total_count": 24
+    },
+    {
+      "question_text": "Checking Fundamentals",
+      "group_name": "Troubleshooting & Security",
+      "max_points": 5.0,
+      "failure_rate": 15.4,
+      "points_lost": 20.0,
+      "impact_score": 76.9,
+      "help_text": null,
+      "fail_count": 4,
+      "total_count": 26
+    },
+    {
+      "question_text": " If escalation occurred, were proper escalation procedures followed?",
+      "group_name": "Script Compliance",
+      "max_points": 5.0,
+      "failure_rate": 8.3,
+      "points_lost": 10.0,
+      "impact_score": 41.7,
+      "help_text": "First, determine if escalation occurred by searching for: \"escalate,\" \"upper level,\" \"tier 2,\" \"escalation\" \"turnaround time\"   If NO escalation language found: Return YES  If escalation occurred, verify these elements occurred: 1. Explanation of next steps or escalation process 2. Callback number confirmed 3. Courtesies during the end of the call   If the agent promises same day response or references a technician being sent out: Return NO",
+      "fail_count": 2,
+      "total_count": 24
+    },
+    {
+      "question_text": "Did the technician confirm subscriber information to locate the customer account?",
+      "group_name": "Script Compliance",
+      "max_points": 5.0,
+      "failure_rate": 8.3,
+      "points_lost": 10.0,
+      "impact_score": 41.7,
+      "help_text": "Search for evidence that the technician confirmed ALL of the following to locate/verify the account: - Customer first and last name - Service address or location - Callback number  - Phone type: cell phone or landline ",
+      "fail_count": 2,
+      "total_count": 24
+    },
+    {
+      "question_text": "Excessive Hold",
+      "group_name": "Communication & Courtesy",
+      "max_points": 5.0,
+      "failure_rate": 7.7,
+      "points_lost": 10.0,
+      "impact_score": 38.5,
+      "help_text": null,
+      "fail_count": 2,
+      "total_count": 26
+    },
+    {
+      "question_text": "Accurate Diagnosis",
+      "group_name": "Troubleshooting & Security",
+      "max_points": 5.0,
+      "failure_rate": 7.7,
+      "points_lost": 10.0,
+      "impact_score": 38.5,
+      "help_text": null,
+      "fail_count": 2,
+      "total_count": 26
+    },
+    {
+      "question_text": "Efficiency of Troubleshooting",
+      "group_name": "Troubleshooting & Security",
+      "max_points": 5.0,
+      "failure_rate": 7.7,
+      "points_lost": 10.0,
+      "impact_score": 38.5,
+      "help_text": null,
+      "fail_count": 2,
+      "total_count": 26
+    },
+    {
+      "question_text": "Provider Call Branding",
+      "group_name": "Opening/Closing",
+      "max_points": 5.0,
+      "failure_rate": 3.8,
+      "points_lost": 5.0,
+      "impact_score": 19.2,
+      "help_text": null,
+      "fail_count": 1,
+      "total_count": 26
+    },
+    {
+      "question_text": "Application of U/L Instruction",
+      "group_name": "Procedures & Resources",
+      "max_points": 5.0,
+      "failure_rate": 3.8,
+      "points_lost": 5.0,
+      "impact_score": 19.2,
+      "help_text": null,
+      "fail_count": 1,
+      "total_count": 26
+    },
+    {
+      "question_text": "Use of Support Flow",
+      "group_name": "Procedures & Resources",
+      "max_points": 5.0,
+      "failure_rate": 3.8,
+      "points_lost": 5.0,
+      "impact_score": 19.2,
+      "help_text": null,
+      "fail_count": 1,
+      "total_count": 26
+    },
+    {
+      "question_text": "Use of Tools / Admins",
+      "group_name": "Procedures & Resources",
+      "max_points": 5.0,
+      "failure_rate": 3.8,
+      "points_lost": 5.0,
+      "impact_score": 19.2,
+      "help_text": null,
+      "fail_count": 1,
+      "total_count": 26
+    },
+    {
+      "question_text": "Courtesy & Professionalism",
+      "group_name": "Communication & Courtesy",
+      "max_points": 5.0,
+      "failure_rate": 0.0,
+      "points_lost": 0.0,
+      "impact_score": 0.0,
+      "help_text": null,
+      "fail_count": 0,
+      "total_count": 26
+    },
+    {
+      "question_text": "Tone & Demeanor",
+      "group_name": "Communication & Courtesy",
+      "max_points": 10.0,
+      "failure_rate": 0.0,
+      "points_lost": 0.0,
+      "impact_score": 0.0,
+      "help_text": null,
+      "fail_count": 0,
+      "total_count": 26
+    },
+    {
+      "question_text": "Introductory Courtesy",
+      "group_name": "Opening/Closing",
+      "max_points": 5.0,
+      "failure_rate": 0.0,
+      "points_lost": 0.0,
+      "impact_score": 0.0,
+      "help_text": null,
+      "fail_count": 0,
+      "total_count": 26
+    },
+    {
+      "question_text": "Success / Missed Opportunity ",
+      "group_name": "Success / Missed Opportunity ",
+      "max_points": 100.0,
+      "failure_rate": 0.0,
+      "points_lost": 30.0,
+      "impact_score": 0.0,
+      "help_text": null,
+      "fail_count": 0,
+      "total_count": 1
+    },
+    {
+      "question_text": "Verification of CPNI",
+      "group_name": "Troubleshooting & Security",
+      "max_points": 10.0,
+      "failure_rate": 0.0,
+      "points_lost": 0.0,
+      "impact_score": 0.0,
+      "help_text": null,
+      "fail_count": 0,
+      "total_count": 26
+    }
+  ],
+  "categories": [
+    {
+      "name": "Auto-Fail Flags",
+      "success_rate": 0.0,
+      "gap_percentage": 100.0,
+      "points_at_risk": 104.0
+    },
+    {
+      "name": "Success / Missed Opportunity ",
+      "success_rate": 70.0,
+      "gap_percentage": 30.0,
+      "points_at_risk": 30.0
+    },
+    {
+      "name": "Communication Markers ",
+      "success_rate": 76.0,
+      "gap_percentage": 24.0,
+      "points_at_risk": 115.0
+    },
+    {
+      "name": "Script Compliance",
+      "success_rate": 80.2,
+      "gap_percentage": 19.8,
+      "points_at_risk": 95.0
+    },
+    {
+      "name": "Procedures & Resources",
+      "success_rate": 85.4,
+      "gap_percentage": 14.6,
+      "points_at_risk": 95.0
+    },
+    {
+      "name": "Opening/Closing",
+      "success_rate": 88.5,
+      "gap_percentage": 11.5,
+      "points_at_risk": 60.0
+    },
+    {
+      "name": "Communication & Courtesy",
+      "success_rate": 90.4,
+      "gap_percentage": 9.6,
+      "points_at_risk": 75.0
+    },
+    {
+      "name": "Troubleshooting & Security",
+      "success_rate": 93.8,
+      "gap_percentage": 6.2,
+      "points_at_risk": 40.0
+    }
+  ],
+  "evaluators": [
+    {
+      "name": "Annie Pedrino",
+      "eval_count": 1,
+      "avg_score": 75.0,
+      "std_dev": null,
+      "status": "Insufficient Data",
+      "deviation_from_norm": -5.9
+    },
+    {
+      "name": "Jimmie Klein",
+      "eval_count": 9,
+      "avg_score": 84.7,
+      "std_dev": 11.3,
+      "status": "Calibrated",
+      "deviation_from_norm": 3.8
+    },
+    {
+      "name": "Kyle Bonpua",
+      "eval_count": 32,
+      "avg_score": 81.5,
+      "std_dev": 23.7,
+      "status": "High Variance",
+      "deviation_from_norm": 0.6
+    },
+    {
+      "name": "Paige Rombou",
+      "eval_count": 9,
+      "avg_score": 82.3,
+      "std_dev": 11.9,
+      "status": "Calibrated",
+      "deviation_from_norm": 1.4
+    }
+  ],
+  "coaching_needed": [
+    {
+      "name": "James Thompson",
+      "agent_id": "f0bb5067-930a-4213-ac01-cb8a98fee541",
+      "eval_count": 2,
+      "avg_percentage": 54.81,
+      "std_dev": 24.48,
+      "tier": "Critical",
+      "failure_patterns": {
+        "Subscriber Location & Search Queries ": 100.0,
+        "Call Closing / Escalation Procedures": 100.0,
+        "Efficiency of Troubleshooting": 100.0,
+        "Accuracy & Detail of Ticket & Service, Category, and Tag Selection": 100.0,
+        "Does the agent offer introductory courtesies during the start of the interaction? ": 100.0,
+        "Did the technician use courtesy language at least 3 times during the call?": 100.0,
+        "If the customer was placed on hold, were proper hold courtesies used?": 100.0,
+        "Did the technician acknowledge the customer's issue or concern?": 100.0
+      }
+    },
+    {
+      "name": "Scotty Smith",
+      "agent_id": "a9314323-f6ef-43c9-96de-0adb6d6ff863",
+      "eval_count": 2,
+      "avg_percentage": 54.81,
+      "std_dev": 24.48,
+      "tier": "Critical",
+      "failure_patterns": {
+        "Dead Air": 100.0,
+        "Accurate Diagnosis": 100.0,
+        "Checking Fundamentals": 100.0,
+        "Use of Support Flow": 100.0,
+        "Use of Tools / Admins": 100.0,
+        "Does the agent offer introductory courtesies during the start of the interaction? ": 100.0,
+        "Did the agent provide an opening branding statement identifying the company and department?": 100.0,
+        "Did the technician use courtesy language at least 3 times during the call?": 100.0,
+        "Did the technician acknowledge the customer's issue or concern?": 100.0
+      }
+    },
+    {
+      "name": "Angelica Jones",
+      "agent_id": "c6dfad4b-391a-46ed-8b2b-1e43f053ebc2",
+      "eval_count": 4,
+      "avg_percentage": 59.86,
+      "std_dev": 42.43,
+      "tier": "Critical",
+      "failure_patterns": {
+        "Acknowledgement & Empathy ": 100.0,
+        "Accuracy & Detail of Ticket & Service, Category, and Tag Selection": 100.0,
+        "Does the agent offer introductory courtesies during the start of the interaction? ": 50.0,
+        "Did the agent provide an opening branding statement identifying the company and department?": 50.0,
+        "Did the technician confirm subscriber information to locate the customer account?": 50.0,
+        " If escalation occurred, were proper escalation procedures followed?": 50.0,
+        "Did the technician use courtesy language at least 3 times during the call?": 50.0,
+        "If the customer was placed on hold, were proper hold courtesies used?": 50.0,
+        "Did the technician acknowledge the customer's issue or concern?": 50.0,
+        "Subscriber Location & Search Queries ": 50.0,
+        "Call Closing / Escalation Procedures": 50.0,
+        "Dead Air": 50.0,
+        "Excessive Hold": 50.0,
+        "Accurate Diagnosis": 50.0
+      }
+    },
+    {
+      "name": "Matt Black",
+      "agent_id": "f3074cfc-69e7-43aa-ba4f-cc393e7f39c2",
+      "eval_count": 2,
+      "avg_percentage": 66.83,
+      "std_dev": 41.47,
+      "tier": "Development",
+      "failure_patterns": {
+        "Does the agent offer introductory courtesies during the start of the interaction? ": 100.0,
+        "Did the technician use courtesy language at least 3 times during the call?": 100.0,
+        "If the customer was placed on hold, were proper hold courtesies used?": 100.0,
+        "Did the technician acknowledge the customer's issue or concern?": 100.0
+      }
+    },
+    {
+      "name": "(unresolved user) 4dd5af28-38e4-4b94-822f-b60bc9d7773a",
+      "agent_id": "4dd5af28-38e4-4b94-822f-b60bc9d7773a",
+      "eval_count": 1,
+      "avg_percentage": 67.31,
+      "std_dev": null,
+      "tier": "Development",
+      "failure_patterns": {
+        "Subscriber Location & Search Queries ": 100.0,
+        "Acknowledgement & Empathy ": 100.0,
+        "Dead Air": 100.0,
+        "Checking Fundamentals": 100.0,
+        "Accuracy & Detail of Ticket & Service, Category, and Tag Selection": 100.0
+      }
+    },
+    {
+      "name": "Kevin Crowe",
+      "agent_id": "dfee7f01-4e8d-4ffc-9f5c-e68108795f4c",
+      "eval_count": 2,
+      "avg_percentage": 72.5,
+      "std_dev": 3.54,
+      "tier": "Development",
+      "failure_patterns": {
+        "Does the agent offer introductory courtesies during the start of the interaction? ": 100.0,
+        "Did the agent provide an opening branding statement identifying the company and department?": 100.0
+      }
+    },
+    {
+      "name": "Gabe Norman",
+      "agent_id": "fcd250aa-2ca8-4d6e-b677-d1f4ca519671",
+      "eval_count": 2,
+      "avg_percentage": 76.92,
+      "std_dev": 20.4,
+      "tier": "Development",
+      "failure_patterns": {
+        "Dead Air": 100.0,
+        "Does the agent offer introductory courtesies during the start of the interaction? ": 100.0,
+        "Did the agent provide an opening branding statement identifying the company and department?": 100.0,
+        "If the customer was placed on hold, were proper hold courtesies used?": 100.0
+      }
+    },
+    {
+      "name": "Mike Alvarez",
+      "agent_id": "3ea6ecee-2a14-4bee-96d6-702b233d1aad",
+      "eval_count": 2,
+      "avg_percentage": 78.37,
+      "std_dev": 4.76,
+      "tier": "Development",
+      "failure_patterns": {
+        "Provider Call Branding": 100.0,
+        "Dead Air": 100.0,
+        "Efficiency of Troubleshooting": 100.0,
+        "Does the agent offer introductory courtesies during the start of the interaction? ": 100.0,
+        "Did the agent provide an opening branding statement identifying the company and department?": 100.0
+      }
+    },
+    {
+      "name": "Camden McKinney",
+      "agent_id": "64106c03-3c5e-47d7-b01f-ba47d43dd05a",
+      "eval_count": 2,
+      "avg_percentage": 79.33,
+      "std_dev": 23.8,
+      "tier": "Development",
+      "failure_patterns": {
+        "Does the agent offer introductory courtesies during the start of the interaction? ": 100.0,
+        "Did the technician use courtesy language at least 3 times during the call?": 100.0
+      }
+    }
+  ],
+  "calibration_issues": [
+    {
+      "name": "Annie Pedrino",
+      "eval_count": 1,
+      "avg_score": 75.0,
+      "std_dev": null,
+      "status": "Insufficient Data",
+      "deviation_from_norm": -5.9
+    },
+    {
+      "name": "Kyle Bonpua",
+      "eval_count": 32,
+      "avg_score": 81.5,
+      "std_dev": 23.7,
+      "status": "High Variance",
+      "deviation_from_norm": 0.6
+    }
+  ]
+}
