@@ -1,0 +1,101 @@
+{
+  "source": "genesys_agent_performance",
+  "filepath": "data/samples/sample_agent_performance.csv",
+  "parsed_at": "2026-01-30T13:24:56.007971",
+  "record_count": 5,
+  "columns": [
+    "Interval Start",
+    "Interval End",
+    "Interval Complete",
+    "Filters",
+    "Media Type",
+    "Agent Id",
+    "Agent Name",
+    "Division Id",
+    "Division Name",
+    "Email",
+    "Handle",
+    "Avg Handle",
+    "Avg Talk",
+    "Avg Hold",
+    "Avg ACW",
+    "ASA",
+    "Total Handle",
+    "Total Talk",
+    "Total Hold",
+    "Total ACW",
+    "Total Dialing",
+    "Total Contacting",
+    "Held",
+    "Transferred",
+    "Outbound",
+    "Alert - No Answer",
+    "Blind Transfer",
+    "Consult Transfer",
+    "Department",
+    "ACW",
+    "Talk",
+    "Title"
+  ],
+  "agents": {
+    "Agent A": {
+      "call_count": 520,
+      "avg_handle_min": 10.5,
+      "avg_talk_min": 10.0,
+      "avg_hold_min": 0.25,
+      "avg_acw_sec": 15.0,
+      "asa_sec": 35.0,
+      "title": "Level 1 Tech",
+      "department": "Tech Center"
+    },
+    "Agent B": {
+      "call_count": 485,
+      "avg_handle_min": 11.0,
+      "avg_talk_min": 10.5,
+      "avg_hold_min": 0.3333333333333333,
+      "avg_acw_sec": 15.0,
+      "asa_sec": 40.0,
+      "title": "Level 2 Tech",
+      "department": "Tech Center"
+    },
+    "Agent C": {
+      "call_count": 510,
+      "avg_handle_min": 12.0,
+      "avg_talk_min": 11.5,
+      "avg_hold_min": 0.5833333333333334,
+      "avg_acw_sec": 15.0,
+      "asa_sec": 38.0,
+      "title": "Level 3 Tech",
+      "department": "Tech Center"
+    },
+    "Agent D": {
+      "call_count": 490,
+      "avg_handle_min": 10.0,
+      "avg_talk_min": 9.583333333333334,
+      "avg_hold_min": 0.16666666666666666,
+      "avg_acw_sec": 15.0,
+      "asa_sec": 42.0,
+      "title": "Level 1 Tech",
+      "department": "Tech Center"
+    },
+    "Agent E": {
+      "call_count": 475,
+      "avg_handle_min": 10.75,
+      "avg_talk_min": 10.25,
+      "avg_hold_min": 0.3,
+      "avg_acw_sec": 15.0,
+      "asa_sec": 36.0,
+      "title": "Level 2 Tech",
+      "department": "Tech Center"
+    }
+  },
+  "totals": {
+    "total_calls": 2480,
+    "total_handle_hours": 448.6875,
+    "avg_handle_min": 10.855342741935484,
+    "avg_talk_min": 10.371807795698926,
+    "avg_hold_min": 0.3279569892473118,
+    "avg_acw_sec": 15.0
+  },
+  "agent_count": 5
+}

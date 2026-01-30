@@ -68,13 +68,21 @@ def ensure_dirs():
 def update_kpi_history(source: str, metrics: dict, filepath: str):
     """
     Append metrics to KPI history file.
+    Uses a list structure for time-series tracking.
     """
     history_file = METRICS_DIR / 'kpi_history.json'
     
+    # Load existing history or create new list
     history = []
     if history_file.exists():
         with open(history_file) as f:
-            history = json.load(f)
+            data = json.load(f)
+            # Handle both old dict format and new list format
+            if isinstance(data, list):
+                history = data
+            elif isinstance(data, dict) and 'entries' in data:
+                history = data['entries']
+            # Otherwise start fresh with empty list
     
     entry = {
         'timestamp': datetime.now().isoformat(),
@@ -89,7 +97,7 @@ def update_kpi_history(source: str, metrics: dict, filepath: str):
     history = history[-1000:]
     
     with open(history_file, 'w') as f:
-        json.dump(history, f, indent=2)
+        json.dump(history, f, indent=2, default=str)
 
 
 def print_validation_results(is_valid: bool, issues: list, statuses: dict):

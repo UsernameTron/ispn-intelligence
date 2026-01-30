@@ -1,4 +1,93 @@
-{
-  "periods": {},
-  "last_updated": null
-}
+[
+  {
+    "timestamp": "2026-01-30T13:24:40.453697",
+    "source": "genesys_interactions",
+    "file": "data/samples/sample_interactions.csv",
+    "metrics": {
+      "avg_handle_time_min": 8.75,
+      "avg_talk_time_min": 8.083333333333334,
+      "avg_hold_time_min": 0.625,
+      "avg_acw_time_sec": 15.0,
+      "avg_wait_time_sec": 25.833333333333332,
+      "answer_count": 6,
+      "p50_handle_min": 8.125,
+      "p90_handle_min": 11.625,
+      "max_handle_min": 13.0,
+      "abandon_count": 2,
+      "abandon_count_total": 2,
+      "abandon_rate": 25.0,
+      "avg_abandon_wait_sec": 105.0,
+      "acw_timeout_count": 6,
+      "acw_timeout_pct": 100.0
+    }
+  },
+  {
+    "timestamp": "2026-01-30T13:24:55.543199",
+    "source": "genesys_adherence",
+    "file": "data/samples/sample_adherence.csv",
+    "metrics": {
+      "avg_adherence_pct": 88.08,
+      "avg_conformance_pct": 90.9,
+      "total_scheduled_hours": 865.0,
+      "total_work_hours": 701.9599999999999
+    }
+  },
+  {
+    "timestamp": "2026-01-30T13:24:56.009578",
+    "source": "genesys_agent_performance",
+    "file": "data/samples/sample_agent_performance.csv",
+    "metrics": {
+      "total_calls": 2480,
+      "total_handle_hours": 448.6875,
+      "avg_handle_min": 10.855342741935484,
+      "avg_talk_min": 10.371807795698926,
+      "avg_hold_min": 0.3279569892473118,
+      "avg_acw_sec": 15.0
+    }
+  },
+  {
+    "timestamp": "2026-01-30T13:24:56.465865",
+    "source": "genesys_agent_status",
+    "file": "data/samples/sample_agent_status.csv",
+    "metrics": {
+      "logged_in_hours": 786.1111111111111,
+      "on_queue_hours": 570.8333333333334,
+      "idle_hours": 90.27777777777777,
+      "available_hours": 7.777777777777778,
+      "away_hours": 0.05,
+      "break_hours": 40.27777777777778,
+      "meal_hours": 86.94444444444444,
+      "not_responding_hours": 0.18888888888888888,
+      "off_queue_hours": 215.27777777777777,
+      "interacting_hours": 479.9861111111111,
+      "shrinkage": {
+        "planned_pct": 16.18374558303887,
+        "unplanned_pct": 27.391519434628975,
+        "total_pct": 43.575265017667846,
+        "on_queue_pct": 72.6148409893993
+      }
+    }
+  },
+  {
+    "timestamp": "2026-01-30T13:24:56.931758",
+    "source": "genesys_interactions",
+    "file": "data/samples/sample_interactions.csv",
+    "metrics": {
+      "avg_handle_time_min": 8.75,
+      "avg_talk_time_min": 8.083333333333334,
+      "avg_hold_time_min": 0.625,
+      "avg_acw_time_sec": 15.0,
+      "avg_wait_time_sec": 25.833333333333332,
+      "answer_count": 6,
+      "p50_handle_min": 8.125,
+      "p90_handle_min": 11.625,
+      "max_handle_min": 13.0,
+      "abandon_count": 2,
+      "abandon_count_total": 2,
+      "abandon_rate": 25.0,
+      "avg_abandon_wait_sec": 105.0,
+      "acw_timeout_count": 6,
+      "acw_timeout_pct": 100.0
+    }
+  }
+]

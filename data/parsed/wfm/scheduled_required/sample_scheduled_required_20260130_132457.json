@@ -1,0 +1,29 @@
+{
+  "source": "wfm_scheduled_required",
+  "filepath": "data/samples/sample_scheduled_required.csv",
+  "parsed_at": "2026-01-30T13:24:57.360836",
+  "record_count": 8,
+  "columns": [
+    "Time (UTC)",
+    "Scheduled",
+    "Required Staff",
+    "Difference",
+    "Required Staff with Shrinkage",
+    "Difference with Shrinkage",
+    "Adjusted Required Staff",
+    "Adjusted Difference",
+    "Adjusted Required Staff with Shrinkage",
+    "Adjusted Difference with Shrinkage",
+    "Time (Chicago)"
+  ],
+  "summary": {
+    "total_intervals": 8,
+    "avg_scheduled": 28.75,
+    "avg_required": 28.2,
+    "avg_difference": 0.55,
+    "understaffed_intervals": 3,
+    "overstaffed_intervals": 5,
+    "understaffed_pct": 37.5
+  },
+  "intervals": []
+}

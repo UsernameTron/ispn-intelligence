@@ -1,0 +1,60 @@
+{
+  "source": "genesys_adherence",
+  "filepath": "data/samples/sample_adherence.csv",
+  "parsed_at": "2026-01-30T13:24:55.542053",
+  "record_count": 5,
+  "columns": [
+    "Agent",
+    "Management Unit",
+    "Adherence (%)",
+    "Conformance (%)",
+    "Exceptions",
+    "Exceptions Duration Minutes",
+    "Exceptions Duration (Adherence)",
+    "Net Impact",
+    "Scheduled Minutes",
+    "Actual Time",
+    "Scheduled On Queue",
+    "Work Time On Queue",
+    "Scheduled (Adherence)"
+  ],
+  "agents": {
+    "Agent A": {
+      "adherence_pct": 92.5,
+      "conformance_pct": 95.2,
+      "exceptions": 12,
+      "scheduled_hours": 173.0
+    },
+    "Agent B": {
+      "adherence_pct": 88.75,
+      "conformance_pct": 90.1,
+      "exceptions": 18,
+      "scheduled_hours": 173.0
+    },
+    "Agent C": {
+      "adherence_pct": 95.3,
+      "conformance_pct": 97.8,
+      "exceptions": 8,
+      "scheduled_hours": 173.0
+    },
+    "Agent D": {
+      "adherence_pct": 78.25,
+      "conformance_pct": 82.5,
+      "exceptions": 28,
+      "scheduled_hours": 173.0
+    },
+    "Agent E": {
+      "adherence_pct": 85.6,
+      "conformance_pct": 88.9,
+      "exceptions": 22,
+      "scheduled_hours": 173.0
+    }
+  },
+  "totals": {
+    "avg_adherence_pct": 88.08,
+    "avg_conformance_pct": 90.9,
+    "total_scheduled_hours": 865.0,
+    "total_work_hours": 701.9599999999999
+  },
+  "agent_count": 5
+}

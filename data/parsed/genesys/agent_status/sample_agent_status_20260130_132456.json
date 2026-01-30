@@ -1,0 +1,93 @@
+{
+  "source": "genesys_agent_status",
+  "filepath": "data/samples/sample_agent_status.csv",
+  "parsed_at": "2026-01-30T13:24:56.464096",
+  "record_count": 5,
+  "columns": [
+    "Interval Start",
+    "Interval End",
+    "Interval Complete",
+    "Filters",
+    "Agent Id",
+    "Agent Name",
+    "Logged In",
+    "On Queue",
+    "Idle",
+    "Available",
+    "Away",
+    "Break",
+    "Meal",
+    "Not Responding",
+    "Off Queue",
+    "Title",
+    "Department",
+    "Off Queue %",
+    "On Queue %",
+    "Not Responding %",
+    "Occupancy",
+    "Interacting",
+    "Interacting %",
+    "Idle %"
+  ],
+  "agents": {
+    "Agent A": {
+      "logged_in_hours": 158.33333333333334,
+      "on_queue_pct": 74.0,
+      "occupancy_pct": 86.0,
+      "idle_pct": 14.000000000000002,
+      "title": "Level 1 Tech",
+      "department": "Tech Center"
+    },
+    "Agent B": {
+      "logged_in_hours": 155.55555555555554,
+      "on_queue_pct": 71.0,
+      "occupancy_pct": 82.0,
+      "idle_pct": 18.0,
+      "title": "Level 2 Tech",
+      "department": "Tech Center"
+    },
+    "Agent C": {
+      "logged_in_hours": 161.11111111111111,
+      "on_queue_pct": 75.0,
+      "occupancy_pct": 87.0,
+      "idle_pct": 13.0,
+      "title": "Level 3 Tech",
+      "department": "Tech Center"
+    },
+    "Agent D": {
+      "logged_in_hours": 154.16666666666666,
+      "on_queue_pct": 70.0,
+      "occupancy_pct": 81.0,
+      "idle_pct": 19.0,
+      "title": "Level 1 Tech",
+      "department": "Tech Center"
+    },
+    "Agent E": {
+      "logged_in_hours": 156.94444444444446,
+      "on_queue_pct": 73.0,
+      "occupancy_pct": 84.0,
+      "idle_pct": 16.0,
+      "title": "Level 2 Tech",
+      "department": "Tech Center"
+    }
+  },
+  "totals": {
+    "logged_in_hours": 786.1111111111111,
+    "on_queue_hours": 570.8333333333334,
+    "idle_hours": 90.27777777777777,
+    "available_hours": 7.777777777777778,
+    "away_hours": 0.05,
+    "break_hours": 40.27777777777778,
+    "meal_hours": 86.94444444444444,
+    "not_responding_hours": 0.18888888888888888,
+    "off_queue_hours": 215.27777777777777,
+    "interacting_hours": 479.9861111111111
+  },
+  "shrinkage": {
+    "planned_pct": 16.18374558303887,
+    "unplanned_pct": 27.391519434628975,
+    "total_pct": 43.575265017667846,
+    "on_queue_pct": 72.6148409893993
+  },
+  "agent_count": 5
+}
