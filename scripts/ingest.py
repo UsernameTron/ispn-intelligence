@@ -1,268 +1,361 @@
 #!/usr/bin/env python3
 """
-ISPN Data Ingestion Script
-Watches data/raw/, parses files, validates, and stores in data/parsed/
+ISPN Data Ingestion Pipeline
 
-Updated with expanded file type support:
-- Genesys Interactions export (genesys-cloud-cx-reporting spec)
-- Genesys Agent Status Duration Details
-- Genesys QA evaluation_questions (genesys-qa-analytics spec)
-- WFM Historical Adherence
+Processes Genesys Cloud exports and internal ISPN files:
+1. Auto-detects file type
+2. Parses to structured JSON
+3. Validates against ISPN standards
+4. Stores to appropriate location
+5. Updates metrics history
+
+Usage:
+    python scripts/ingest.py                    # Process all files in data/raw/
+    python scripts/ingest.py path/to/file.csv   # Process single file
 """
 
+import sys
 import json
 import shutil
 from pathlib import Path
 from datetime import datetime
-import argparse
+
+# Add scripts to path
+sys.path.insert(0, str(Path(__file__).parent))
 
 from utils.parsers import parse_file, identify_file_type
-from utils.validators import validate_data
-from utils.thresholds import get_all_statuses
+from utils.validators import validate_data, get_status, THRESHOLDS
 
-# Paths
+
+# =============================================================================
+# CONFIGURATION
+# =============================================================================
+
 BASE_DIR = Path(__file__).parent.parent
-RAW_DIR = BASE_DIR / "data" / "raw"
-PARSED_DIR = BASE_DIR / "data" / "parsed"
-METRICS_DIR = BASE_DIR / "data" / "metrics"
-ARCHIVE_DIR = RAW_DIR / "archive"
+DATA_DIR = BASE_DIR / 'data'
+RAW_DIR = DATA_DIR / 'raw'
+PARSED_DIR = DATA_DIR / 'parsed'
+METRICS_DIR = DATA_DIR / 'metrics'
 
+# Output subdirectories by source type
+OUTPUT_DIRS = {
+    'genesys_interactions': PARSED_DIR / 'genesys' / 'interactions',
+    'genesys_agent_performance': PARSED_DIR / 'genesys' / 'agent_performance',
+    'genesys_agent_status': PARSED_DIR / 'genesys' / 'agent_status',
+    'genesys_skills_performance': PARSED_DIR / 'genesys' / 'skills_performance',
+    'genesys_adherence': PARSED_DIR / 'genesys' / 'adherence',
+    'wfm_scheduled_required': PARSED_DIR / 'wfm' / 'scheduled_required',
+    'wfm_activities': PARSED_DIR / 'wfm' / 'activities',
+    'agent_schedules': PARSED_DIR / 'wfm' / 'agent_schedules',
+    'scorecard': PARSED_DIR / 'scorecard',
+    'dpr': PARSED_DIR / 'dpr',
+    'wcs': PARSED_DIR / 'wcs',
+}
+
+
+# =============================================================================
+# HELPER FUNCTIONS
+# =============================================================================
 
 def ensure_dirs():
-    """Create necessary directories."""
-    for d in [RAW_DIR, PARSED_DIR, METRICS_DIR, ARCHIVE_DIR]:
+    """Create all required directories."""
+    for d in OUTPUT_DIRS.values():
         d.mkdir(parents=True, exist_ok=True)
-    
-    # Create subdirs for all file types
-    subdirs = [
-        'dpr', 'wcs', 'scorecard', 
-        'genesys_interactions', 'genesys_agent_status', 
-        'genesys_qa', 'wfm_adherence'
-    ]
-    for subdir in subdirs:
-        (PARSED_DIR / subdir).mkdir(exist_ok=True)
+    METRICS_DIR.mkdir(parents=True, exist_ok=True)
+    RAW_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def get_files_to_process() -> list:
-    """Get all unprocessed files in raw directory."""
-    files = []
-    for ext in ['*.xlsx', '*.csv']:
-        files.extend(RAW_DIR.glob(ext))
-    return [f for f in files if f.is_file() and not f.name.startswith('.')]
-
-
-def process_file(filepath: Path, archive: bool = True) -> dict:
+def update_kpi_history(source: str, metrics: dict, filepath: str):
     """
-    Process a single file: parse, validate, store.
-    Returns processing result.
+    Append metrics to KPI history file.
     """
-    print(f"\nProcessing: {filepath.name}")
+    history_file = METRICS_DIR / 'kpi_history.json'
     
-    # Identify file type
+    history = []
+    if history_file.exists():
+        with open(history_file) as f:
+            history = json.load(f)
+    
+    entry = {
+        'timestamp': datetime.now().isoformat(),
+        'source': source,
+        'file': filepath,
+        'metrics': metrics,
+    }
+    
+    history.append(entry)
+    
+    # Keep last 1000 entries
+    history = history[-1000:]
+    
+    with open(history_file, 'w') as f:
+        json.dump(history, f, indent=2)
+
+
+def print_validation_results(is_valid: bool, issues: list, statuses: dict):
+    """Pretty print validation results."""
+    if is_valid:
+        print("  ✓ Validation: PASSED")
+    else:
+        print("  ✗ Validation: FAILED")
+    
+    for issue in issues:
+        if issue.startswith('RED:') or issue.startswith('CRITICAL:'):
+            print(f"    🔴 {issue}")
+        elif issue.startswith('YELLOW:') or issue.startswith('WARNING:'):
+            print(f"    🟡 {issue}")
+        else:
+            print(f"    ℹ️  {issue}")
+    
+    if statuses:
+        print("  Status Summary:")
+        for metric, status in statuses.items():
+            if status == 'green':
+                print(f"    🟢 {metric}")
+            elif status == 'yellow':
+                print(f"    🟡 {metric}")
+            elif status == 'red':
+                print(f"    🔴 {metric}")
+
+
+def print_metrics_summary(data: dict):
+    """Print key metrics from parsed data."""
+    source = data.get('source', 'unknown')
+    
+    print("  Key Metrics:")
+    
+    if source == 'genesys_interactions':
+        m = data.get('metrics', {})
+        print(f"    Records: {data.get('acd_count', 0):,} ACD calls")
+        if 'avg_handle_time_min' in m:
+            aht = m['avg_handle_time_min']
+            status = get_status(aht, 'aht_min')
+            icon = '🟢' if status == 'green' else ('🟡' if status == 'yellow' else '🔴')
+            print(f"    AHT: {aht:.2f} min {icon}")
+        if 'avg_wait_time_sec' in m:
+            awt = m['avg_wait_time_sec']
+            status = get_status(awt, 'awt_sec')
+            icon = '🟢' if status == 'green' else ('🟡' if status == 'yellow' else '🔴')
+            print(f"    AWT: {awt:.1f} sec {icon}")
+        if 'abandon_rate' in m:
+            abandon = m['abandon_rate']
+            status = get_status(abandon, 'abandon_pct')
+            icon = '🟢' if status == 'green' else ('🟡' if status == 'yellow' else '🔴')
+            print(f"    Abandon Rate: {abandon:.2f}% {icon}")
+    
+    elif source == 'genesys_agent_performance':
+        t = data.get('totals', {})
+        print(f"    Agents: {data.get('agent_count', 0)}")
+        print(f"    Total Calls: {t.get('total_calls', 0):,}")
+        if 'avg_handle_min' in t:
+            aht = t['avg_handle_min']
+            status = get_status(aht, 'aht_min')
+            icon = '🟢' if status == 'green' else ('🟡' if status == 'yellow' else '🔴')
+            print(f"    Team AHT: {aht:.2f} min {icon}")
+    
+    elif source == 'genesys_agent_status':
+        s = data.get('shrinkage', {})
+        print(f"    Agents: {data.get('agent_count', 0)}")
+        if 'total_pct' in s:
+            shrink = s['total_pct']
+            status = get_status(shrink, 'shrinkage_pct')
+            icon = '🟢' if status == 'green' else ('🟡' if status == 'yellow' else '🔴')
+            print(f"    Total Shrinkage: {shrink:.1f}% {icon} (target: <30%)")
+        if 'on_queue_pct' in s:
+            print(f"    On-Queue: {s['on_queue_pct']:.1f}%")
+    
+    elif source == 'genesys_skills_performance':
+        t = data.get('totals', {})
+        print(f"    Offered: {t.get('offered', 0):,}")
+        print(f"    Answered: {t.get('answered', 0):,}")
+        if 'answer_rate' in t:
+            rate = t['answer_rate']
+            status = get_status(rate, 'answer_rate_pct')
+            icon = '🟢' if status == 'green' else ('🟡' if status == 'yellow' else '🔴')
+            print(f"    Answer Rate: {rate:.1f}% {icon}")
+        if 'abandon_rate' in t:
+            abandon = t['abandon_rate']
+            status = get_status(abandon, 'abandon_pct')
+            icon = '🟢' if status == 'green' else ('🟡' if status == 'yellow' else '🔴')
+            print(f"    Abandon Rate: {abandon:.1f}% {icon}")
+    
+    elif source == 'genesys_adherence':
+        t = data.get('totals', {})
+        print(f"    Agents: {data.get('agent_count', 0)}")
+        if 'avg_adherence_pct' in t:
+            adh = t['avg_adherence_pct']
+            status = get_status(adh, 'adherence_pct')
+            icon = '🟢' if status == 'green' else ('🟡' if status == 'yellow' else '🔴')
+            print(f"    Adherence: {adh:.1f}% {icon} (target: >90%)")
+        if 'avg_conformance_pct' in t:
+            print(f"    Conformance: {t['avg_conformance_pct']:.1f}%")
+    
+    elif source == 'wfm_scheduled_required':
+        s = data.get('summary', {})
+        print(f"    Intervals: {s.get('total_intervals', 0)}")
+        print(f"    Understaffed: {s.get('understaffed_intervals', 0)} ({s.get('understaffed_pct', 0):.1f}%)")
+        print(f"    Overstaffed: {s.get('overstaffed_intervals', 0)}")
+    
+    elif source == 'agent_schedules':
+        s = data.get('summary', {})
+        print(f"    Total Agents: {s.get('total_agents', 0)}")
+        print(f"    Schedulable: {s.get('schedulable', 0)}")
+        if 'work_teams' in s:
+            print(f"    Work Teams: {len(s['work_teams'])}")
+    
+    elif source == 'scorecard':
+        kpis = data.get('kpis', {})
+        for kpi, val in kpis.items():
+            if val is not None:
+                print(f"    {kpi}: {val:.2f}")
+
+
+# =============================================================================
+# MAIN PROCESSING
+# =============================================================================
+
+def process_file(filepath: Path, move_after: bool = False) -> dict:
+    """
+    Process a single file through the pipeline.
+    
+    Args:
+        filepath: Path to the file
+        move_after: Whether to move file to archive after processing
+    
+    Returns:
+        Parsed data dictionary
+    """
+    print(f"\n{'='*60}")
+    print(f"Processing: {filepath.name}")
+    print(f"{'='*60}")
+    
+    # 1. Identify file type
     file_type = identify_file_type(filepath)
-    print(f"  Type: {file_type}")
+    print(f"  Detected Type: {file_type}")
     
     if file_type == 'unknown':
-        return {
-            'file': filepath.name,
-            'status': 'skipped',
-            'reason': 'Unknown file type'
-        }
+        print("  ⚠️  Unknown file type - skipping")
+        return {'error': 'Unknown file type'}
     
-    # Parse file
-    try:
-        data = parse_file(filepath)
-    except Exception as e:
-        return {
-            'file': filepath.name,
-            'status': 'error',
-            'reason': f'Parse error: {str(e)}'
-        }
+    # 2. Parse file
+    print("  Parsing...")
+    data = parse_file(filepath)
     
-    # Validate
-    is_valid, issues = validate_data(data)
-    data['validation'] = {
-        'is_valid': is_valid,
-        'issues': issues
-    }
+    if 'error' in data:
+        print(f"  ❌ Parse Error: {data['error']}")
+        return data
     
-    if issues:
-        print(f"  Warnings: {issues}")
+    # 3. Print metrics summary
+    print_metrics_summary(data)
     
-    # Calculate statuses for scorecard
-    if file_type == 'scorecard' and 'kpis' in data:
-        data['statuses'] = get_all_statuses(data['kpis'])
+    # 4. Validate
+    print("  Validating...")
+    is_valid, issues, statuses = validate_data(data)
+    print_validation_results(is_valid, issues, statuses)
     
-    # Special handling for Genesys metrics
-    if file_type == 'genesys_interactions' and 'metrics' in data:
-        print(f"  Genesys Metrics:")
-        metrics = data['metrics']
-        if 'avg_handle_time_min' in metrics:
-            print(f"    AHT: {metrics['avg_handle_time_min']:.2f} min")
-        if 'avg_wait_time_sec' in metrics:
-            print(f"    AWT: {metrics['avg_wait_time_sec']:.1f} sec")
-        if 'abandon_rate' in metrics:
-            print(f"    Abandon: {metrics['abandon_rate']:.1f}%")
-        
-        # Add statuses
-        kpis = {
-            'aht': metrics.get('avg_handle_time_min'),
-            'awt': metrics.get('avg_wait_time_sec'),
-            'abandon': metrics.get('abandon_rate')
-        }
-        kpis = {k: v for k, v in kpis.items() if v is not None}
-        if kpis:
-            data['statuses'] = get_all_statuses(kpis)
+    # 5. Save parsed data
+    source = data.get('source', 'unknown')
+    output_dir = OUTPUT_DIRS.get(source, PARSED_DIR)
+    output_dir.mkdir(parents=True, exist_ok=True)
     
-    # Special handling for QA evaluations
-    if file_type == 'genesys_qa' and 'tier_counts' in data:
-        print(f"  QA Agent Tiers:")
-        for tier, count in data['tier_counts'].items():
-            print(f"    {tier}: {count}")
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    output_file = output_dir / f"{filepath.stem}_{timestamp}.json"
     
-    # Generate output filename
-    timestamp = datetime.now().strftime('%Y-%m-%d_%H%M%S')
-    output_file = PARSED_DIR / file_type / f"{timestamp}.json"
-    
-    # Save parsed data
     with open(output_file, 'w') as f:
         json.dump(data, f, indent=2, default=str)
-    print(f"  Saved: {output_file}")
     
-    # Update KPI history if scorecard
-    if file_type == 'scorecard':
-        update_kpi_history(data)
+    print(f"  Saved: {output_file.relative_to(BASE_DIR)}")
     
-    # Update Genesys metrics history
-    if file_type == 'genesys_interactions':
-        update_genesys_history(data)
+    # 6. Update metrics history
+    metrics_to_track = {}
+    if 'metrics' in data:
+        metrics_to_track.update(data['metrics'])
+    if 'totals' in data:
+        metrics_to_track.update(data['totals'])
+    if 'shrinkage' in data:
+        metrics_to_track['shrinkage'] = data['shrinkage']
     
-    # Archive original
-    if archive:
-        archive_file = ARCHIVE_DIR / f"{timestamp}_{filepath.name}"
-        shutil.move(str(filepath), str(archive_file))
-        print(f"  Archived: {archive_file.name}")
+    if metrics_to_track:
+        update_kpi_history(source, metrics_to_track, str(filepath))
     
-    return {
-        'file': filepath.name,
-        'status': 'success',
-        'type': file_type,
-        'output': str(output_file),
-        'valid': is_valid
-    }
+    # 7. Move file to archive if requested
+    if move_after:
+        archive_dir = RAW_DIR / 'archive'
+        archive_dir.mkdir(exist_ok=True)
+        archived = archive_dir / f"{filepath.stem}_{timestamp}{filepath.suffix}"
+        shutil.move(str(filepath), str(archived))
+        print(f"  Archived: {archived.name}")
+    
+    return data
 
 
-def update_kpi_history(scorecard_data: dict):
-    """Append scorecard KPIs to historical time series."""
-    history_file = METRICS_DIR / "kpi_history.json"
+def process_directory(directory: Path, move_after: bool = False) -> list:
+    """
+    Process all supported files in a directory.
+    """
+    results = []
     
-    if history_file.exists():
-        with open(history_file, 'r') as f:
-            history = json.load(f)
-    else:
-        history = {'periods': {}}
+    # Supported extensions
+    extensions = ['.csv', '.xlsx', '.xls']
     
-    period = datetime.now().strftime('%Y-%m')
+    files = [f for f in directory.iterdir() 
+             if f.is_file() and f.suffix.lower() in extensions]
     
-    history['periods'][period] = {
-        'kpis': scorecard_data.get('kpis', {}),
-        'statuses': scorecard_data.get('statuses', {}),
-        'ingested_at': datetime.now().isoformat()
-    }
-    history['last_updated'] = datetime.now().isoformat()
+    if not files:
+        print(f"No supported files found in {directory}")
+        return results
     
-    with open(history_file, 'w') as f:
-        json.dump(history, f, indent=2)
-    print(f"  Updated KPI history: {period}")
+    print(f"Found {len(files)} files to process")
+    
+    for filepath in sorted(files):
+        result = process_file(filepath, move_after)
+        results.append({
+            'file': str(filepath),
+            'source': result.get('source', 'unknown'),
+            'success': 'error' not in result,
+        })
+    
+    return results
 
 
-def update_genesys_history(interactions_data: dict):
-    """Append Genesys metrics to history for trend analysis."""
-    history_file = METRICS_DIR / "genesys_history.json"
-    
-    if history_file.exists():
-        with open(history_file, 'r') as f:
-            history = json.load(f)
-    else:
-        history = {'periods': {}}
-    
-    period = datetime.now().strftime('%Y-%m-%d')
-    
-    history['periods'][period] = {
-        'metrics': interactions_data.get('metrics', {}),
-        'callbacks': interactions_data.get('callbacks', {}),
-        'record_count': interactions_data.get('record_count'),
-        'ingested_at': datetime.now().isoformat()
-    }
-    history['last_updated'] = datetime.now().isoformat()
-    
-    with open(history_file, 'w') as f:
-        json.dump(history, f, indent=2)
-    print(f"  Updated Genesys history: {period}")
-
+# =============================================================================
+# CLI ENTRY POINT
+# =============================================================================
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(description='ISPN Data Ingestion')
-    parser.add_argument('--no-archive', action='store_true', 
-                        help='Do not archive processed files')
-    parser.add_argument('--file', type=str, 
-                        help='Process specific file instead of all')
-    args = parser.parse_args()
-    
     ensure_dirs()
     
-    print("=" * 60)
-    print("ISPN Data Ingestion")
-    print("=" * 60)
-    print("\nSupported file types:")
-    print("  - Scorecard (LT_Scorecard*.xlsx)")
-    print("  - DPR (DPR*.xlsx)")
-    print("  - WCS (WCS*.xlsx, MMDDYY-MMDDYY.xlsx)")
-    print("  - Genesys Interactions (Interactions*.csv)")
-    print("  - Genesys Agent Status (Agent_Status*.csv)")
-    print("  - Genesys QA (evaluation_questions*.csv)")
-    print("  - WFM Adherence (Adherence*.csv)")
-    
-    if args.file:
-        files = [Path(args.file)]
+    if len(sys.argv) > 1:
+        # Process specific file
+        filepath = Path(sys.argv[1])
+        if not filepath.exists():
+            print(f"Error: File not found: {filepath}")
+            sys.exit(1)
+        
+        process_file(filepath)
     else:
-        files = get_files_to_process()
-    
-    if not files:
-        print("\nNo files to process in data/raw/")
-        print("Drop Genesys exports there and run again.")
-        return
-    
-    print(f"\nFound {len(files)} file(s) to process")
-    
-    results = []
-    for f in files:
-        result = process_file(f, archive=not args.no_archive)
-        results.append(result)
-    
-    # Summary
-    print("\n" + "=" * 60)
-    print("SUMMARY")
-    print("=" * 60)
-    
-    success = [r for r in results if r['status'] == 'success']
-    errors = [r for r in results if r['status'] == 'error']
-    skipped = [r for r in results if r['status'] == 'skipped']
-    
-    print(f"  Success: {len(success)}")
-    print(f"  Errors:  {len(errors)}")
-    print(f"  Skipped: {len(skipped)}")
-    
-    if success:
-        print("\nProcessed:")
-        for r in success:
-            print(f"  - {r['file']} → {r['type']}")
-    
-    if errors:
-        print("\nErrors:")
-        for r in errors:
-            print(f"  - {r['file']}: {r['reason']}")
+        # Process all files in raw directory
+        results = process_directory(RAW_DIR)
+        
+        print(f"\n{'='*60}")
+        print("SUMMARY")
+        print(f"{'='*60}")
+        
+        success = sum(1 for r in results if r['success'])
+        print(f"Processed: {len(results)} files")
+        print(f"Success: {success}")
+        print(f"Failed: {len(results) - success}")
+        
+        # Group by source type
+        by_source = {}
+        for r in results:
+            source = r['source']
+            by_source[source] = by_source.get(source, 0) + 1
+        
+        print("\nBy Source Type:")
+        for source, count in sorted(by_source.items()):
+            print(f"  {source}: {count}")
 
 
 if __name__ == '__main__':

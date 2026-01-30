@@ -1,0 +1,6 @@
+"Agent","Management Unit","Adherence (%)","Conformance (%)","Exceptions","Exceptions Duration Minutes","Exceptions Duration (Adherence)","Net Impact","Scheduled Minutes","Actual Time","Scheduled On Queue","Work Time On Queue","Scheduled (Adherence)"
+"Agent A","Permanent Schedules MU","92.50%","95.20%","12","145.5","120.3","Positive","10380","10800","9420","8950.5","10380"
+"Agent B","Permanent Schedules MU","88.75%","90.10%","18","210.2","185.6","Negative","10380","10560","9420","8350.2","10380"
+"Agent C","Permanent Schedules MU","95.30%","97.80%","8","95.8","82.4","Positive","10380","10680","9420","9125.8","10380"
+"Agent D","Permanent Schedules MU","78.25%","82.50%","28","385.4","342.1","Negative","10380","10200","9420","7625.4","10380"
+"Agent E","Permanent Schedules MU","85.60%","88.90%","22","265.7","235.2","Negative","10380","10440","9420","8065.7","10380"
